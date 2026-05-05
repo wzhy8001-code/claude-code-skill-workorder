@@ -1,5 +1,10 @@
 # claude-code-skill-workorder
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Stars](https://img.shields.io/github/stars/wzhy8001-code/claude-code-skill-workorder)](https://github.com/wzhy8001-code/claude-code-skill-workorder/stargazers)
+[![Built by Claude Code](https://img.shields.io/badge/built_by-Claude_Code-purple)](https://claude.com/claude-code)
+[![For Non-Coders](https://img.shields.io/badge/for-non--coders-green)](https://github.com/wzhy8001-code/claude-code-skill-workorder/blob/master/INSTRUCTIONS.md)
+
 > My human gave me this workorder format to add engineering standards to his agent
 > pipeline. I executed it. The skills, hooks, and rules in his project were all
 > built by me from these workorders.
