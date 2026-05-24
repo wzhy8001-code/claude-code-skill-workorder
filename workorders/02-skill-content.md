@@ -25,8 +25,8 @@
 - SKILL.md body **目标长度 < 500 行**（Anthropic 推荐，避免被 per-skill 截断）
 - frontmatter 不动（阶段 1 已写好且已被 Claude Code 系统识别）
 - 关键内容靠**前**写（截断从尾部开始）
-- **21 项基线已锁定**（19 项 + 输出验证 + Evals 测试集，不增不减）
-- **基线分级已锁定**：T1（7 项必做）/ T2-长跑（5）/ T2-LLM（4）/ T2-外部调用（2）/ T3（4 选做）
+- **22 项基线已锁定**（21 项 + 测试模式隔离，不增不减）
+- **基线分级已锁定**：T1（8 项必做）/ T2-长跑（5）/ T2-LLM（4）/ T2-外部调用（2）/ T3（4 选做）
 - **agent 类型分类已锁定**：4 类（一次性短脚本 / 短跑调 LLM / 长跑无 LLM / 长跑+LLM+GPU 最复杂）
 - A/B/C 三场景流程已锁定
 - 75 分质量定义已锁定
@@ -62,8 +62,8 @@ B 场景反向审计 = 硬要求，不是建议。
    - B：升级现有智能体流程（含反向审计 + 必须 Read 现有代码）
    - C：大重构流程（含打 tag）
 
-## 3. 21 项基线（按 5 个 Tier 组织）
-   - Tier 1：7 项（所有 agent 必做）
+## 3. 22 项基线（按 5 个 Tier 组织）
+   - Tier 1：8 项（所有 agent 必做）
    - Tier 2-长跑组：5 项
    - Tier 2-LLM 组：4 项（含输出验证 + Evals）
    - Tier 2-外部调用组：2 项
@@ -117,7 +117,7 @@ B 场景反向审计 = 硬要求，不是建议。
 - **100 分**：苹果级 polish（**不追求**）
 
 适用：
-- 写代码：21 项基线（按 tier 加载）+ 主动思考补全 = 75 分起步
+- 写代码：22 项基线（按 tier 加载）+ 主动思考补全 = 75 分起步
 - 提建议：发现错误必指出，但不要求 100 分 polish
 - 评价用户决策：合理性把关，不放过明显错误，但不偏执完美
 ```
@@ -143,22 +143,22 @@ B 场景反向审计 = 硬要求，不是建议。
 
 | agent 类型 | 必做 Tier | 共项数 | <project> 例子 |
 |---|---|---|---|
-| 一次性短脚本（< 5 min, 无 LLM, 无外部调用） | T1 | 7 | prepare_voiceover.py |
-| 短跑调 LLM（< 30 min, 调 LLM） | T1 + T2-LLM + T2-外部 | 13 | agent1/agent2/agent3 |
-| 长跑无 LLM（> 30 min, 无 LLM） | T1 + T2-长跑 + T2-外部 | 14 | （<project> 暂无） |
-| 长跑+LLM+GPU 最复杂 | T1 + T2-全 + T3 视情况 | 18-22 | agent4_make.py |
+| 一次性短脚本（< 5 min, 无 LLM, 无外部调用） | T1 | 8 | prepare_voiceover.py |
+| 短跑调 LLM（< 30 min, 调 LLM） | T1 + T2-LLM + T2-外部 | 14 | agent1/agent2/agent3 |
+| 长跑无 LLM（> 30 min, 无 LLM） | T1 + T2-长跑 + T2-外部 | 15 | （<project> 暂无） |
+| 长跑+LLM+GPU 最复杂 | T1 + T2-全 + T3 视情况 | 19-23 | agent4_make.py |
 
 #### <project> 现有 agent 分类（反向审计参考）
 
 | 文件 | 类型 |
 |---|---|
-| agent1_news.py | 短跑调 LLM（13 项） |
-| agent2_script.py | 短跑调 LLM（13 项） |
-| agent3_step1.py | 短跑调 LLM（13 项） |
-| agent3_step2.py | 短跑调 LLM（13 项） |
-| agent4_make.py | 长跑+LLM+GPU 最复杂（18-22 项） |
+| agent1_news.py | 短跑调 LLM（14 项；test_mode_isolation 待补） |
+| agent2_script.py | 短跑调 LLM（14 项；test_mode_isolation 待补） |
+| agent3_step1.py | 短跑调 LLM（14 项；test_mode_isolation 待补） |
+| agent3_step2.py | 短跑调 LLM（14 项；test_mode_isolation 待补） |
+| agent4_make.py | 长跑+LLM+GPU 最复杂（19-23 项；test_mode_isolation 待补） |
 | agent4_b/a/overlay/common.py | 长跑+GPU 子模块（按职责） |
-| prepare_voiceover.py | 一次性短脚本（7 项） |
+| prepare_voiceover.py | 一次性短脚本（8 项；test_mode_isolation 可用 --output-dir 轻量替代） |
 
 新加 agent 上线时 SKILL.md 这表加一行。
 ```
@@ -195,7 +195,7 @@ B 场景反向审计 = 硬要求，不是建议。
    - 任务时长预估（< 5min / < 30min / > 30min）
    - 是否调 LLM、是否用 GPU
 2. 按上面信息**判断 agent 类型**（§1 分类表），确定加载哪些 Tier
-3. 过对应 Tier 的基线项（不是 21 项全过），每项判断怎么落地
+3. 过对应 Tier 的基线项（不是 22 项全过），每项判断怎么落地
 4. 主动思考补全（§4）—— 必须执行，不能跳
 5. 输出设计摘要（§6 模板，含 Tier 标记）给用户拍板
 6. 拍板后才能写代码
@@ -238,7 +238,7 @@ B 场景反向审计 = 硬要求，不是建议。
 
 ---
 
-### 2.3 §3 21 项基线（按 5 个 Tier 组织）
+### 2.3 §3 22 项基线（按 5 个 Tier 组织）
 
 **每项格式**：
 
@@ -252,9 +252,9 @@ B 场景反向审计 = 硬要求，不是建议。
 
 **Tier 标记规则**：每项标题前加 `[T1]` / `[T2-长跑]` / `[T2-LLM]` / `[T2-外部]` / `[T3]`。
 
-#### 21 项清单（按 Tier 分组，已锁定）
+#### 22 项清单（按 Tier 分组，已锁定）
 
-##### Tier 1：所有 agent 必做（7 项）
+##### Tier 1：所有 agent 必做（8 项）
 
 | # | 项名 | 关键提示 |
 |---|---|---|
@@ -265,6 +265,7 @@ B 场景反向审计 = 硬要求，不是建议。
 | 5 | [T1] 超时配置外置 | 换模型不用改代码；超时按 `输出字数 ÷ 4 × 1.5` 算（参 CLAUDE.md） |
 | 6 | [T1] 结构化日志 | 出问题能查；路径 共享文件夹/logs/agentX_YYYYMMDD_NNN.log |
 | 7 | [T1] 依赖前置检查 | 启动时验证上游产物存在 + 服务连通性；不要跑一半发现没素材 |
+| 22 | [T1] 测试模式隔离（--test-mode CLI + 输出路径重定向） | 手动测试不允许覆盖生产输出；agent 必须接 `--test-mode` flag，启用后所有"写"路径重定向到 `~/Desktop/agentN_test_YYYYMMDD_HHMMSS/`，"读"路径不变；systemd timer 永不传该 flag。<project> 真实事故：repeated incidents where manual test runs overwrote same-day production outputs (topic files / signal files / dedup history)，dedup pollution leaked already-used IDs into next-day selection |
 
 ##### Tier 2-长跑组：长跑 agent 必做（5 项）
 
@@ -305,7 +306,7 @@ B 场景反向审计 = 硬要求，不是建议。
 - 怎么落地：指向 <project> 已有函数/路径，不要让 Claude 重新发明
 - 反向审计点：可机械检查的（"grep 是否含 X"），不是主观判断
 
-**前 3 项已给完整范例**（§A.1），剩下 18 项搭建窗口按模式写。
+**前 3 项已给完整范例**（§A.1），剩下 19 项搭建窗口按模式写。
 
 **业界参考**：本分级方案基于 Mercari/GitLab/Google SRE 的 Production Readiness Tier 模式（业界共识），具体清单内容是 <project> 自定义。
 
@@ -409,7 +410,7 @@ substring 匹配按原文找不到。
 ### Agent 类型与 Tier
 **判定为**：[一次性短脚本 / 短跑调 LLM / 长跑无 LLM / 长跑+LLM+GPU 最复杂]
 **加载 Tier**：[T1 / T1+T2-LLM+T2-外部 / 等]
-**总项数**：[7 / 13 / 14 / 18-22]
+**总项数**：[8 / 14 / 15 / 19-23]
 
 ### Tier 基线检查（按加载的 Tier 列项，不是 21 项全列）
 
@@ -525,8 +526,8 @@ for kw in "75 分" "三场景判断" "反向审计" "主动思考补全" "Gotcha
   grep -q "$kw" ~/.claude/skills/<project>-production-standards/SKILL.md && echo "$kw OK" || echo "$kw ❌"
 done
 
-# 21 项全在（按 Tier 标记检查）
-for n in $(seq 1 21); do
+# 22 项全在（按 Tier 标记检查）
+for n in $(seq 1 22); do
   grep -qE "^### \[T[0-9]" ~/.claude/skills/<project>-production-standards/SKILL.md && \
     grep -qE "^### \[.*\] " ~/.claude/skills/<project>-production-standards/SKILL.md
 done
@@ -572,7 +573,7 @@ wc -l ~/.claude/skills/<project>-production-standards/SKILL.md
 | 改 settings.json | 阶段 1 已定 |
 | 写超过 500 行 | per-skill 截断风险，超了挪子文件 |
 | 在 SKILL.md 里写代码示例 | 这是流程文档，不是教程 |
-| 删/改 21 项中任何一项 | 设计窗口已锁定 |
+| 删/改 22 项中任何一项 | 设计窗口已锁定 |
 | 改 Tier 划分 | 5 个 Tier 已锁定 |
 | 改 agent 类型分类（4 类） | 已锁定，业界参考 Mercari/GitLab 模式 |
 | 加新场景（D/E） | 三场景已锁，加场景升级 B 类 |
@@ -589,7 +590,7 @@ wc -l ~/.claude/skills/<project>-production-standards/SKILL.md
 | C（目标问题） | 停下，对话框出方案 |
 
 **特别提示**：
-- 21 项之一在 <project> 真的不适用 → B 类升级（不要私自删）
+- 22 项之一在 <project> 真的不适用 → B 类升级（不要私自删）
 - SKILL.md 即使做了拆分仍 > 500 行 → B 类升级讨论
 - frontmatter description 跟 body 内容矛盾 → C 类升级（结构性问题）
 - Tier 划分某项跟实际不符（如某 T2 项实际所有 agent 都该做） → B 类升级
@@ -747,4 +748,4 @@ signal.signal(signal.SIGHUP, lambda s, f: (cleanup(), sys.exit(0)))
 **反向审计点**：{1-2 个可机械检查的方法（grep / ls / cat）}
 ```
 
-21 项总长度估计 280-330 行，加上 §0 顶部硬规则 + §1（含 agent 分类表）/§2/§4/§5/§6/§7，全文可能在 500-560 行。**如超 500 → 拆 baselines.md 子文件**（21 项明细挪过去，SKILL.md 主体只放清单+Tier 表+链接），SKILL.md 主体目标 ~300 行。
+22 项总长度估计 295-345 行，加上 §0 顶部硬规则 + §1（含 agent 分类表）/§2/§4/§5/§6/§7，全文可能在 515-575 行。**如超 500 → 拆 baselines.md 子文件**（22 项明细挪过去，SKILL.md 主体只放清单+Tier 表+链接），SKILL.md 主体目标 ~300 行。

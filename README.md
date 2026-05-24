@@ -22,10 +22,10 @@ Two markdown workorders that, when pasted to a coding agent, cause it to build:
 - **`.claude/rules/`** — 4 rule files (engineering principles, code quality, research-first, user context)
 - **`.claude/hooks/`** — 4 shell hooks (1 keyword-trigger + 3 PreToolUse validators)
 - **`.claude/skills/<your-skill>/SKILL.md`** — A production-standards skill with:
-  - 21 baselines organized in 5 tiers (T1 = mandatory for all agents, T2 = situational, T3 = optional)
+  - 22 baselines organized in 5 tiers (T1 = mandatory for all agents, T2 = situational, T3 = optional)
   - 4 agent-type taxonomy (one-shot script / short-running w/ LLM / long-running / long-running + LLM + GPU)
   - 3-scenario flow (A: new agent, B: upgrade with reverse audit, C: large refactor)
-  - "Reverse audit" requirement: when upgrading an existing agent, the agent MUST `Read` the existing code (not guess), check it against the 21 baselines, and propose paying back missing items in the same upgrade pass
+  - "Reverse audit" requirement: when upgrading an existing agent, the agent MUST `Read` the existing code (not guess), check it against the 22 baselines, and propose paying back missing items in the same upgrade pass
 
 It's a **buildable prompt** — you don't install software, you give the workorder
 to your agent and let it build.
@@ -35,7 +35,7 @@ to your agent and let it build.
 ```
 workorders/
 ├── 01-scaffold.md       Phase 1: build the .claude/ skeleton
-└── 02-skill-content.md  Phase 2: write SKILL.md actual content (21 baselines, 3 scenarios, etc.)
+└── 02-skill-content.md  Phase 2: write SKILL.md actual content (22 baselines, 3 scenarios, etc.)
 rules/
 ├── engineering-principles.md   YAGNI/KISS, no DRY (small-scale projects)
 ├── code-quality.md             "delete-cheaper-than-add", "3-fail hard rule"
@@ -96,7 +96,7 @@ When you adapt:
 
 - Replace agent names with your own
 - Replace utility function names with whatever your project calls them
-- Replace the 21 baselines' specific examples with your project's standards (the
+- Replace the 22 baselines' specific examples with your project's standards (the
   *categories* — startup notification, failure status, retry limits, resource
   cleanup, etc. — are mostly universal; the *implementation details* are not)
 - Replace the gotchas section with your own real incidents

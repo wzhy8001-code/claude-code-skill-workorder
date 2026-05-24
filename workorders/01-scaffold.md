@@ -528,7 +528,7 @@ cp ~/.claude/settings.json ~/.claude/settings.json.bak.20260503
 ```markdown
 ---
 name: <project>-production-standards
-description: Use this skill when the user asks to (1) create a new agent or pipeline module, (2) upgrade an existing agent with new features, or (3) restructure existing agent code. Triggers include "新智能体", "新模块", "新脚本", "升级", "重构", "V2/V3", "加新功能", "拆分", "目录重组". This skill enforces 19 <project> production standards (dev_mode, externalized timeout, failure status, startup notify, lock check, retry limit, idempotency, logging, config layering, schema version, error classification, resource cleanup, secrets externalization, dependency precheck, progress observability, resource yielding, LLM-prompt-first debugging, V1/V2 fallback) before code is written or modified. For upgrades, ALSO audits the existing agent for missing standards and proposes fixing them in the same upgrade pass. MUST be invoked before drafting agent code — undertriggering causes agents to ship without standard components and break the pipeline (real incidents: agent4 lock leak, hardcoded timeouts breaking after model swap).
+description: Use this skill when the user asks to (1) create a new agent or pipeline module, (2) upgrade an existing agent with new features, or (3) restructure existing agent code. Triggers include "新智能体", "新模块", "新脚本", "升级", "重构", "V2/V3", "加新功能", "拆分", "目录重组". This skill enforces 22 <project> production standards (startup notify, failure status, secrets externalization, lock check, externalized timeout, structured logging, dependency precheck, test_mode_isolation [T1]; dev_mode, progress.json resume, resource cleanup atexit, resource yielding, progress observability [T2-长跑]; LLM-prompt-first debugging, runtime schema validation, V1/V2 fallback, evals testset [T2-LLM]; error classification, retry+exponential backoff [T2-外部]; config layering, schema_version, idempotency [T3]) before code is written or modified. For upgrades, ALSO audits the existing agent for missing standards and proposes fixing them in the same upgrade pass. MUST be invoked before drafting agent code — undertriggering causes agents to ship without standard components and break the pipeline (real incidents: agent4 lock leak, hardcoded timeouts breaking after model swap, repeated test runs overwriting production data).
 ---
 
 # <project> Production Standards
@@ -537,7 +537,7 @@ description: Use this skill when the user asks to (1) create a new agent or pipe
 >
 > 阶段 2 工单将填充：
 > - 75 分质量标准定义
-> - 19 项基线标准（详细每项的"为什么/怎么落地/反向审计点"）
+> - 22 项基线标准（详细每项的"为什么/怎么落地/反向审计点"）
 > - 主动思考补全机制
 > - A/B/C 三场景流程
 > - B 场景反向审计逻辑

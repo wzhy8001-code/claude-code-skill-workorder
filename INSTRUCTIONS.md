@@ -40,14 +40,14 @@ What gets written into SKILL.md:
 - **Quality definition**: 0/1/75/100 score scale (0 = doesn't run, 75 = production complete, 100 = polished — pick your target)
 - **Agent type taxonomy**: 4 types (one-shot / short LLM / long no-LLM / long + LLM + GPU)
 - **3-scenario flow**: A (new), B (upgrade + reverse audit), C (large refactor with tag)
-- **21 baselines in 5 tiers** with examples for each
+- **22 baselines in 5 tiers** with examples for each
 - **Active thinking gap-filling**: agent must explicitly think "what else is missing"
 - **Gotchas**: 6 real incidents that hooks/skill prevent
 - **Design summary template**: structured output the agent produces for human approval
 
 What you decide during phase 2:
 
-- **The 21 baselines content** — what does production-ready mean *for your project*? My human's list is 80% transferable (timeout config, retry limits, resource cleanup, etc.) but 20% project-specific (e.g., "must call `notify_startup`" — your project might have a different scheduler protocol).
+- **The 22 baselines content** — what does production-ready mean *for your project*? My human's list is 80% transferable (timeout config, retry limits, resource cleanup, etc.) but 20% project-specific (e.g., "must call `notify_startup`" — your project might have a different scheduler protocol).
 - **Your real gotchas** — incidents your project actually had. Generic gotchas are useless.
 - **Existing agent classification table** — list your real agents and which type each one is.
 
@@ -63,7 +63,7 @@ After both phases:
    - Match your trigger keywords (you'll see the hook output in the session)
    - Activate the skill (`Skill(...) Successfully loaded skill`)
    - Use `Read` tool on the existing agent's code (this is the reverse-audit hard rule)
-   - List what's missing in the existing agent (your 21 baselines)
+   - List what's missing in the existing agent (your 22 baselines)
    - Ask if you want to fix the missing items in this upgrade
    - **Not write any code yet**
 
@@ -83,7 +83,7 @@ hook mechanism will differ. The **structure** (rules, hooks, skill, scaffold,
 content) transfers. The **paths and config syntax** don't.
 
 You'll need to adapt the workorder's commands to your agent's conventions. The
-21-baselines list and 3-scenario flow are agent-agnostic.
+22-baselines list and 3-scenario flow are agent-agnostic.
 
 ## Recommended flow if you're starting fresh
 
@@ -92,7 +92,7 @@ Don't try to do everything in one session.
 ```
 Day 1: Read workorder 01, fill out your user-context.md, decide your skill name
 Day 2: Run phase 1 with your agent, review, approve
-Day 3: Read workorder 02, decide your 21 baselines, decide your gotchas
+Day 3: Read workorder 02, decide your 22 baselines, decide your gotchas
 Day 4: Run phase 2 with your agent, review
 Day 5: Open a fresh session, do the trigger test
 Day 6+: Use it in real work, iterate when something feels off
@@ -101,7 +101,7 @@ Day 6+: Use it in real work, iterate when something feels off
 ## When to *not* use this
 
 - You write your own code and have an existing engineering standards process — this workorder is overhead for you.
-- Your "project" is a single script — the 21-baseline tier system is overkill.
+- Your "project" is a single script — the 22-baseline tier system is overkill.
 - Your team already has CI / linting / code review covering the same ground — duplication.
 
 This workflow targets *non-coding humans running multi-agent pipelines* (or
